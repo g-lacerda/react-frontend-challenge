@@ -1,88 +1,87 @@
-# ⚛️ Desafio React Frontend
+<div align="center">
 
-Bem-vindo ao repositório de avaliação técnica para a vaga de **Desenvolvedor React Pleno**.
+<img src="docs/screenshots/login.webp" alt="Tela de login do CineDash" width="700">
 
-Este não é apenas um teste de codificação; é uma oportunidade para você demonstrar como estrutura aplicações escaláveis, toma decisões arquiteturais e prioriza a experiência do usuário.
+# CineDash
 
-Estamos buscando profissionais que entendam que "fazer funcionar" é apenas o primeiro passo. O nosso foco está também em: **Manutenibilidade, Performance e Boas Práticas.**
+Dashboard de curadoria e descoberta de filmes, construído sobre a API do TMDB.
 
----
+[Como rodar](INSTRUCTIONS.md) · [Decisões técnicas](ARCHITECTURE.md) · [Enunciado do desafio](docs/DESAFIO.md)
 
-## 🎯 O Objetivo
-
-O desafio consiste em desenvolver uma aplicação Front-end que consuma uma API pública, focando na criação de interfaces ricas (Dashboards, Tabelas, Filtros) e na gestão eficiente de estado e dados assíncronos.
-
-### 📂 Escolha sua Missão
-
-Você tem a liberdade de escolher **um** dos dois desafios abaixo para implementar. Ambos possuem o mesmo peso e complexidade técnica. Escolha aquele com o qual você se sentir mais criativo:
-
-- **[Opção A: CineDash (Filmes)](./cases/01-cinedash.md)** – Crie um dashboard analítico para curadoria de cinema.
-- **[Opção B: Libris (Livros)](./cases/02-libris.md)** – Desenvolva um gerenciador de biblioteca pessoal e estante virtual.
+</div>
 
 ---
 
-## 🛠 Tech Stack Obrigatória
+Resolução da **Opção A** do desafio técnico para Desenvolvedor React Pleno. A proposta é um produto interno: curadores buscam, filtram e selecionam quais filmes entram no catálogo de um streaming.
 
-Para alinhar com a nossa stack atual e garantir uma avaliação justa, exigimos o uso das seguintes tecnologias. **Por favor, não utilize alternativas (ex: Redux ou Context API para estado global complexo) a menos que justificável no seu README.**
+## O que a aplicação faz
 
-- **Core:** React 18+, TypeScript (Strict), Vite.
-- **Server State & Cache:** TanStack Query.
-- **Client State:** Zustand.
-- **Routing:** TanStack Router (Preferencial) ou React Router v6 (com Data Loaders).
-- **UI Components:** Shadcn/ui + TailwindCSS.
-- **Formulários:** React Hook Form ou TanStack Form + Zod (validação).
-- **Testes:** Vitest + React Testing Library.
+- **Login simulado** com validação por schema, token fictício e sessão que sobrevive ao recarregamento.
+- **Descoberta** com rolagem infinita, busca com atraso proposital e sete filtros: gênero, ano, faixa de nota, faixa de duração, idioma original, mínimo de votos e ordenação.
+- **Minha lista** persistida no navegador, em tabela ordenável no desktop e cartões no celular, com os mesmos filtros da descoberta.
+- **Detalhes** com sinopse, elenco em carrossel, trailer sob demanda e os números do filme.
+- **Três idiomas**, português, inglês e espanhol, que também mudam os dados vindos da API.
+- **Tema claro e escuro**, efeitos sonoros sintetizados e preferências guardadas entre sessões.
 
-> **Diferencial:** Implementação de `TanStack Table` para listagens complexas.
+## Telas
 
----
+<table>
+<tr>
+<td width="50%"><img src="docs/screenshots/descobrir.webp" alt="Tela de descoberta com grade de filmes"><br><em>Descobrir</em></td>
+<td width="50%"><img src="docs/screenshots/watchlist.webp" alt="Minha lista em tabela ordenável"><br><em>Minha lista</em></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/detalhes.webp" alt="Página de detalhes do filme"><br><em>Detalhes</em></td>
+<td><img src="docs/screenshots/descobrir-claro.webp" alt="Tela de descoberta no tema claro"><br><em>Tema claro</em></td>
+</tr>
+</table>
 
-## 🧠 Critérios de Avaliação (O que olhamos)
+<div align="center">
+<img src="docs/screenshots/mobile-descobrir.webp" alt="Descobrir no celular" width="260">
+&nbsp;&nbsp;
+<img src="docs/screenshots/mobile-watchlist.webp" alt="Minha lista no celular" width="260">
+<br><em>O layout é desenhado primeiro para o celular</em>
+</div>
 
-Seu código será revisado como se fosse um Pull Request real para a nossa codebase de produção.
+## Stack
 
-### 1. Arquitetura e Organização
+| Camada | Escolha |
+|---|---|
+| Base | React 19, TypeScript estrito, Vite 8 |
+| Dados do servidor | TanStack Query |
+| Estado do cliente | Zustand com persistência |
+| Rotas | TanStack Router |
+| Interface | shadcn/ui sobre Radix e Tailwind 4 |
+| Formulários | React Hook Form e Zod |
+| Tabela | TanStack Table |
 
-- Uso de **Feature-Sliced Design (FSD)**, Clean Architecture ou uma estrutura modular sólida.
-- Separação clara entre UI (Componentes), Lógica (Hooks) e Dados (Services/Adapters).
-- Código limpo, legível e seguindo princípios SOLID.
+## Como rodar
 
-### 2. Qualidade Técnica
+```bash
+npm install
+cp .env.example .env.local   # preencha com seu token de leitura da TMDB
+npm run dev
+```
 
-- Domínio do **TypeScript** (evitar `any`, tipagem correta de generics e props).
-- Uso correto do **TanStack Query** (cache keys, invalidation, prefetching).
-- Tratamento de erros e estados de loading (Skeletons, Error Boundaries).
-- Performance (memorização onde necessário, debouncing em buscas).
+O passo a passo completo, incluindo como obter o token, está em [INSTRUCTIONS.md](INSTRUCTIONS.md).
 
-### 3. Testes e Confiabilidade
+## Organização
 
-- Não buscamos 100% de cobertura, mas sim **testes significativos**.
-- Testes unitários em hooks complexos e utilitários.
-- Testes de integração nos fluxos principais (ex: Adicionar item à lista, filtrar tabela).
+Feature-Sliced Design, com dependências apontando sempre para baixo:
 
-### 4. Documentação e Git
+```
+src/
+  app/        providers, rotas e layout
+  pages/      uma pasta por tela
+  features/   auth, filtros, lista, tema, idioma, configurações
+  entities/   o filme: tipos, adaptadores da API e componentes
+  shared/     cliente da TMDB, biblioteca de UI, i18n e utilitários
+```
 
-- Histórico de commits organizado.
-- Arquivo `INSTRUCTIONS.md` com instruções claras de como rodar o projeto e qual projeto foi escolhido.
-- Arquivo `ARCHITECTURE.md` explicando suas decisões técnicas (Por que usou X? Como resolveu Y?).
+O raciocínio por trás de cada escolha, incluindo o que a API do TMDB não permite fazer, está em [ARCHITECTURE.md](ARCHITECTURE.md).
 
----
+## Qualidade
 
-## 🚀 Como entregar
-
-1.  Faça um **fork** deste repositório para a sua própria conta do GitHub.
-2.  Desenvolva sua solução em uma branch separada (ex: `feature/cinedash-impl` ou `feature/libris-impl`).
-3.  Quando finalizar, abra um **Pull Request** da sua branch de desenvolvimento para a branch `main` do **seu** repositório forkado. **Atenção: Não abra o PR para o repositório original da empresa.**
-4.  No corpo do PR, utilize o template fornecido e inclua uma breve descrição do que foi feito, além do projeto escolhido.
-5.  Envie o link do seu Pull Request (ou do repositório) para o recrutador responsável.
-
----
-
-## ⏳ Prazo e Escopo
-
-Sabemos que este é um desafio complexo.
-
-- **Prazo para entrega:** Você terá o prazo de 7 dias corridos para realização do desafio.
-- **Faltou tempo?** Se não conseguir entregar tudo, **priorize a qualidade sobre a quantidade**. É melhor entregar uma funcionalidade perfeitamente arquitetada e testada do que três funcionalidades quebradas. Documente o que faltou no seu README.
-
-**Boa sorte! Estamos ansiosos para ver seu código.** 🚀
+- **Acessibilidade** verificada com axe em todas as telas, nos dois temas e com menus abertos: nenhuma violação. Navegação completa por teclado, contraste dentro da WCAG AA e rótulos para leitor de tela.
+- **Performance** com divisão do pacote por rota. Sair da descoberta para a lista baixa 10 kB.
+- **Tipagem** sem `any`, com os dicionários de tradução conferidos em tempo de compilação.
