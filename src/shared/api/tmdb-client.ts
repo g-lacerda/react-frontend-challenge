@@ -14,7 +14,6 @@ export class TmdbError extends Error {
 
 export async function tmdbGet<T>(path: string, params: QueryParams = {}, signal?: AbortSignal): Promise<T> {
   const url = new URL(env.tmdbBaseUrl + path)
-  url.searchParams.set('language', 'pt-BR')
 
   for (const [key, value] of Object.entries(params)) {
     if (value !== undefined && value !== '') {

@@ -1,3 +1,7 @@
+import { useTranslation } from '@/shared/i18n'
+
 export function WatchlistPage() {
-  return <h1 className="text-2xl font-semibold">Minha lista</h1>
+  const { t } = useTranslation()
+
+  return <h1 className="text-2xl">{t.pages.watchlist}</h1>
 }

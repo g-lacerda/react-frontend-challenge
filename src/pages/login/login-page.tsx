@@ -1,3 +1,7 @@
+import { useTranslation } from '@/shared/i18n'
+
 export function LoginPage() {
-  return <h1 className="text-2xl font-semibold">Entrar</h1>
+  const { t } = useTranslation()
+
+  return <h1 className="text-2xl">{t.pages.login}</h1>
 }

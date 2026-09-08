@@ -1,14 +1,17 @@
 import { Link, Outlet } from '@tanstack/react-router'
+import { LocaleSwitcher } from '@/features/locale'
 import { ThemeToggle, useThemeStore } from '@/features/theme'
+import { useTranslation } from '@/shared/i18n'
 import { Toaster } from '@/shared/ui/sonner'
 
-const navItems = [
-  { to: '/', label: 'Descobrir' },
-  { to: '/watchlist', label: 'Minha lista' },
-] as const
-
 export function RootLayout() {
+  const { t } = useTranslation()
   const theme = useThemeStore((state) => state.theme)
+
+  const navItems = [
+    { to: '/', label: t.nav.discover },
+    { to: '/watchlist', label: t.nav.watchlist },
+  ] as const
 
   return (
     <div className="flex min-h-svh flex-col">
@@ -30,7 +33,10 @@ export function RootLayout() {
             ))}
           </nav>
 
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <LocaleSwitcher />
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
