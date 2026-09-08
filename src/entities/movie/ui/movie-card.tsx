@@ -56,6 +56,7 @@ export function MovieCard({ movie, action }: MovieCardProps) {
         <Link
           to="/movie/$id"
           params={{ id: movie.id }}
+          aria-label={`${movie.title} — ${fullMeta}`}
           className="grid min-w-0 flex-1 gap-1 rounded-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
         >
           <h3 className="truncate text-[13px] font-medium" title={movie.title}>

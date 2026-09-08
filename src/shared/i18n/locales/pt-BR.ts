@@ -1,6 +1,7 @@
 export const ptBR = {
   nav: {
     label: 'Navegação principal',
+    skipToContent: 'Pular para o conteúdo',
     discover: 'Descobrir',
     watchlist: 'Minha lista',
   },
@@ -36,6 +37,7 @@ export const ptBR = {
   },
   common: {
     retry: 'Tentar de novo',
+    loading: 'Carregando…',
     decrement: 'Diminuir',
     increment: 'Aumentar',
     backToTop: 'Voltar ao topo',

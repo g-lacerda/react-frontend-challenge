@@ -68,7 +68,10 @@ function Carousel({ label, previousLabel, nextLabel, className, children }: Caro
 
       <div
         ref={trackRef}
-        className="scrollbar-none flex min-w-0 flex-1 snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth"
+        tabIndex={0}
+        role="group"
+        aria-label={label}
+        className="scrollbar-none flex min-w-0 flex-1 snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth rounded-md outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
       >
         {children}
       </div>

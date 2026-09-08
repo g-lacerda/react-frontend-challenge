@@ -29,6 +29,13 @@ export function RootLayout() {
 
   return (
     <div className="flex min-h-svh flex-col">
+      <a
+        href="#conteudo"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:border focus:border-foreground focus:bg-background focus:px-4 focus:py-2 focus:text-sm"
+      >
+        {t.nav.skipToContent}
+      </a>
+
       <header className="sticky top-0 z-10 border-b border-border bg-background">
         <div className="mx-auto flex h-14 w-full max-w-[1600px] items-center gap-4 px-4 sm:px-6 lg:px-8">
           <Link to="/" aria-label="CineDash" className="flex items-center">
@@ -57,7 +64,7 @@ export function RootLayout() {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-[1600px] flex-1 px-4 py-6 pb-24 sm:px-6 sm:py-8 sm:pb-8 lg:px-8">
+      <main id="conteudo" tabIndex={-1} className="mx-auto w-full max-w-[1600px] flex-1 px-4 py-6 pb-24 sm:px-6 sm:py-8 sm:pb-8 lg:px-8">
         <Outlet />
       </main>
 

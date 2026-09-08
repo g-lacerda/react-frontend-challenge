@@ -3,6 +3,7 @@ import type { Dictionary } from '../model/types'
 export const enUS: Dictionary = {
   nav: {
     label: 'Main navigation',
+    skipToContent: 'Skip to content',
     discover: 'Discover',
     watchlist: 'My list',
   },
@@ -38,6 +39,7 @@ export const enUS: Dictionary = {
   },
   common: {
     retry: 'Try again',
+    loading: 'Loading…',
     decrement: 'Decrease',
     increment: 'Increase',
     backToTop: 'Back to top',

@@ -40,7 +40,12 @@ export function MoviePoster({ path, alt, size = 'w342', className }: MoviePoster
           />
         </>
       ) : (
-        <div role="img" aria-label={alt} className="grid size-full place-items-center text-ink-28">
+        <div
+          role={alt ? 'img' : undefined}
+          aria-label={alt || undefined}
+          aria-hidden={alt ? undefined : true}
+          className="grid size-full place-items-center text-ink-45"
+        >
           <Film className="size-8" strokeWidth={1.4} aria-hidden="true" />
         </div>
       )}

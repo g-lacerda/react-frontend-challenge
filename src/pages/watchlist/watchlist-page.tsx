@@ -302,8 +302,8 @@ export function WatchlistPage() {
                         <button
                           type="button"
                           onClick={header.column.getToggleSortingHandler()}
-                          className="label-mono inline-flex items-center gap-1.5 text-ink-45 transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground aria-[sort=ascending]:text-foreground aria-[sort=descending]:text-foreground"
-                          aria-sort={ariaSort}
+                          data-sorted={sorted || undefined}
+                          className="label-mono inline-flex items-center gap-1.5 text-ink-45 transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground data-[sorted]:text-foreground"
                           aria-label={`${String(header.column.columnDef.header)} · ${sorted === 'asc' ? t.watchlist.sortDesc : t.watchlist.sortAsc}`}
                         >
                           {flexRender(header.column.columnDef.header, header.getContext())}

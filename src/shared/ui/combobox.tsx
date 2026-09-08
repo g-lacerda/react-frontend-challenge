@@ -42,17 +42,17 @@ function Combobox({ id, value, onChange, options, placeholder, searchPlaceholder
           className
         )}
       >
-        <span className={cn("truncate", !selected && "text-ink-28")}>{selected?.label ?? placeholder}</span>
+        <span className={cn("truncate", !selected && "text-ink-45")}>{selected?.label ?? placeholder}</span>
         <ChevronDownIcon aria-hidden="true" />
       </PopoverTrigger>
-      <PopoverContent align="start" className="w-(--radix-popover-trigger-width) min-w-56 gap-0 p-0">
+      <PopoverContent aria-label={searchPlaceholder} align="start" className="w-(--radix-popover-trigger-width) min-w-56 gap-0 p-0">
         <CommandPrimitive className="flex flex-col">
           <div className="flex items-center gap-2 border-b border-border px-3">
             <SearchIcon aria-hidden="true" className="size-4 shrink-0 text-ink-45" />
             <CommandPrimitive.Input
               autoFocus
               placeholder={searchPlaceholder}
-              className="h-10 w-full bg-transparent text-sm outline-none placeholder:text-ink-28"
+              className="h-10 w-full bg-transparent text-sm outline-none placeholder:text-ink-45"
             />
           </div>
           <CommandPrimitive.List className="max-h-64 overflow-y-auto p-1">

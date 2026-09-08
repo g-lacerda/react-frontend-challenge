@@ -92,10 +92,10 @@ export function RangeField({
           title={disabled ? hint : undefined}
           className="flex h-9 w-full items-center justify-between gap-1.5 border-b border-input pt-1 pb-2 text-sm transition-colors duration-[260ms] outline-none focus-visible:border-foreground disabled:cursor-not-allowed aria-expanded:border-foreground [&_svg]:size-4 [&_svg]:text-ink-45"
         >
-          <span className={isDefault ? 'text-ink-28' : undefined}>{summary}</span>
+          <span className={isDefault ? 'text-ink-45' : undefined}>{summary}</span>
           <ChevronDownIcon aria-hidden="true" />
         </PopoverTrigger>
-        <PopoverContent align="start" className="w-80 gap-4">
+        <PopoverContent aria-label={label} align="start" className="w-80 gap-4">
           <p className="label-mono text-ink-45">{label}</p>
           <Slider
             min={low}

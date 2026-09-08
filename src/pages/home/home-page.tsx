@@ -65,12 +65,13 @@ export function HomePage() {
         <MovieFilters />
       </section>
 
-      <section className="grid gap-3">
+      <section className="grid gap-3" aria-busy={movies.isPending}>
+        <p role="status" aria-live="polite" className="sr-only">
+          {movies.isPending ? t.common.loading : t.discover.count(total)}
+        </p>
         <div className="flex items-baseline justify-between gap-3">
           <h2 className="text-lg">{heading}</h2>
-          {movies.isSuccess ? (
-            <span className="label-mono text-ink-45">{t.discover.count(total)}</span>
-          ) : null}
+          {movies.isSuccess ? <span className="label-mono text-ink-45">{t.discover.count(total)}</span> : null}
         </div>
 
         {movies.isError ? (
@@ -93,7 +94,7 @@ export function HomePage() {
         {movies.isSuccess && items.length === 0 ? (
           <div className="grid animate-fade place-items-center gap-1.5 rounded-md border border-border bg-card px-5 py-11 text-center text-[13px] text-ink-45">
             <p>{t.discover.emptyTitle}</p>
-            <p className="text-ink-28">{t.discover.emptyDescription}</p>
+            <p className="text-ink-45">{t.discover.emptyDescription}</p>
           </div>
         ) : null}
 
@@ -112,7 +113,7 @@ export function HomePage() {
         <div ref={sentinelRef} className="flex h-12 items-center justify-center">
           {movies.isFetchingNextPage ? <Spinner /> : null}
           {!movies.hasNextPage && items.length > 0 ? (
-            <span className="label-mono text-ink-28">{t.discover.endOfList}</span>
+            <span className="label-mono text-ink-45">{t.discover.endOfList}</span>
           ) : null}
         </div>
       </section>

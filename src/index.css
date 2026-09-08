@@ -29,7 +29,8 @@
   --ink-10: rgb(var(--ink-rgb) / 0.1);
   --ink-16: rgb(var(--ink-rgb) / 0.16);
   --ink-28: rgb(var(--ink-rgb) / 0.28);
-  --ink-45: rgb(var(--ink-rgb) / 0.45);
+  /* 0.6 em vez de 0.45: é o degrau usado em texto, e abaixo disso não passa em WCAG AA. */
+  --ink-45: rgb(var(--ink-rgb) / 0.6);
   --ink-70: rgb(var(--ink-rgb) / 0.7);
 
   --background: var(--bg);
