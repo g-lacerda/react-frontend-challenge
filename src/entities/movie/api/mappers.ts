@@ -12,6 +12,7 @@ export function toMovie(dto: MovieDto): Movie {
     voteAverage: dto.vote_average,
     voteCount: dto.vote_count,
     genreIds: dto.genre_ids ?? [],
+    originalLanguage: dto.original_language ?? '',
   }
 }
 

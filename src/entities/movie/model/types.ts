@@ -3,6 +3,11 @@ export interface Genre {
   name: string
 }
 
+export interface Language {
+  code: string
+  englishName: string
+}
+
 export interface Movie {
   id: number
   title: string
@@ -13,6 +18,7 @@ export interface Movie {
   voteAverage: number
   voteCount: number
   genreIds: number[]
+  originalLanguage: string
 }
 
 export interface CastMember {
@@ -37,9 +43,27 @@ export interface Paginated<T> {
   totalResults: number
 }
 
+export const SORT_OPTIONS = [
+  'popularity.desc',
+  'popularity.asc',
+  'vote_average.desc',
+  'vote_average.asc',
+  'primary_release_date.desc',
+  'primary_release_date.asc',
+  'revenue.desc',
+] as const
+
+export type SortOption = (typeof SORT_OPTIONS)[number]
+
 export interface MovieFilters {
   query?: string
   genreId?: number
   year?: number
   minRating?: number
+  maxRating?: number
+  sortBy?: SortOption
+  minRuntime?: number
+  maxRuntime?: number
+  originalLanguage?: string
+  minVotes?: number
 }

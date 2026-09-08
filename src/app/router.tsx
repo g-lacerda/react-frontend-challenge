@@ -1,5 +1,6 @@
 import { Outlet, createRootRoute, createRoute, createRouter, redirect } from '@tanstack/react-router'
 import { isAuthenticated } from '@/features/auth'
+import { ErrorPage } from '@/pages/error/error-page'
 import { HomePage } from '@/pages/home/home-page'
 import { LoginPage } from '@/pages/login/login-page'
 import { MoviePage } from '@/pages/movie/movie-page'
@@ -10,6 +11,7 @@ import { RootLayout } from './layouts/root-layout'
 const rootRoute = createRootRoute({
   component: RootLayout,
   notFoundComponent: NotFoundPage,
+  errorComponent: ErrorPage,
 })
 
 const loginRoute = createRoute({
@@ -66,6 +68,7 @@ const routeTree = rootRoute.addChildren([
 export const router = createRouter({
   routeTree,
   defaultPreload: 'intent',
+  defaultErrorComponent: ErrorPage,
   scrollRestoration: true,
 })
 

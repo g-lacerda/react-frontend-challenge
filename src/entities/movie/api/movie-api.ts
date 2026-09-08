@@ -1,7 +1,7 @@
 import { tmdbGet } from '@/shared/api/tmdb-client'
 import type { Locale } from '@/shared/i18n'
-import type { Genre, Movie, MovieDetails, MovieFilters, Paginated } from '../model/types'
-import type { GenreDto, MovieDetailsDto, MovieDto, PaginatedDto } from './dto'
+import type { Genre, Language, Movie, MovieDetails, MovieFilters, Paginated } from '../model/types'
+import type { GenreDto, LanguageDto, MovieDetailsDto, MovieDto, PaginatedDto } from './dto'
 import { toMovie, toMovieDetails, toPaginated } from './mappers'
 
 interface ListParams {
@@ -15,8 +15,15 @@ export const movieApi = {
     return toPaginated(dto, toMovie)
   },
 
-  async search({ query, page, language }: ListParams & { query: string }, signal?: AbortSignal): Promise<Paginated<Movie>> {
-    const dto = await tmdbGet<PaginatedDto<MovieDto>>('/search/movie', { query, page, language }, signal)
+  async search(
+    { query, year, page, language }: ListParams & { query: string; year?: number },
+    signal?: AbortSignal,
+  ): Promise<Paginated<Movie>> {
+    const dto = await tmdbGet<PaginatedDto<MovieDto>>(
+      '/search/movie',
+      { query, page, language, primary_release_year: year, include_adult: false },
+      signal,
+    )
     return toPaginated(dto, toMovie)
   },
 
@@ -29,11 +36,16 @@ export const movieApi = {
       {
         page,
         language,
-        sort_by: 'popularity.desc',
+        sort_by: filters.sortBy ?? 'popularity.desc',
+        include_adult: false,
         with_genres: filters.genreId,
         primary_release_year: filters.year,
         'vote_average.gte': filters.minRating,
-        'vote_count.gte': filters.minRating ? 50 : undefined,
+        'vote_average.lte': filters.maxRating,
+        'vote_count.gte': filters.minVotes ?? (filters.minRating || filters.maxRating !== undefined ? 50 : undefined),
+        'with_runtime.gte': filters.minRuntime,
+        'with_runtime.lte': filters.maxRuntime,
+        with_original_language: filters.originalLanguage,
       },
       signal,
     )
@@ -52,5 +64,12 @@ export const movieApi = {
   async genres({ language }: { language: Locale }, signal?: AbortSignal): Promise<Genre[]> {
     const dto = await tmdbGet<{ genres: GenreDto[] }>('/genre/movie/list', { language }, signal)
     return dto.genres
+  },
+
+  async languages(signal?: AbortSignal): Promise<Language[]> {
+    const dto = await tmdbGet<LanguageDto[]>('/configuration/languages', {}, signal)
+    return dto
+      .filter((item) => item.iso_639_1 !== 'xx')
+      .map((item) => ({ code: item.iso_639_1, englishName: item.english_name }))
   },
 }

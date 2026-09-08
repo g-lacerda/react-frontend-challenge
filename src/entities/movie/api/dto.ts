@@ -8,6 +8,12 @@ export interface MovieDto {
   vote_average: number
   vote_count: number
   genre_ids?: number[]
+  original_language?: string
+}
+
+export interface LanguageDto {
+  iso_639_1: string
+  english_name: string
 }
 
 export interface GenreDto {
