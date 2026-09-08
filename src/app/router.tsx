@@ -3,15 +3,20 @@ import { Outlet, createRootRouteWithContext, createRoute, createRouter, redirect
 import { movieDetailsOptions } from '@/entities/movie'
 import { useLocaleStore } from '@/shared/i18n'
 import { queryClient } from './providers/query-client'
+import { lazy } from 'react'
 import { isAuthenticated } from '@/features/auth'
 import { ErrorPage } from '@/pages/error/error-page'
-import { HomePage } from '@/pages/home/home-page'
-import { LoginPage } from '@/pages/login/login-page'
-import { MoviePage } from '@/pages/movie/movie-page'
 import { NotFoundPage } from '@/pages/not-found/not-found-page'
-import { SettingsPage } from '@/pages/settings/settings-page'
-import { WatchlistPage } from '@/pages/watchlist/watchlist-page'
 import { RootLayout } from './layouts/root-layout'
+import { RoutePending } from './layouts/route-pending'
+
+// Cada página vira um pedaço próprio do bundle, baixado só quando a rota é aberta.
+// Cada página vira um pedaço próprio do bundle, baixado só quando a rota é aberta.
+const HomePage = lazy(() => import('@/pages/home/home-page').then((m) => ({ default: m.HomePage })))
+const LoginPage = lazy(() => import('@/pages/login/login-page').then((m) => ({ default: m.LoginPage })))
+const MoviePage = lazy(() => import('@/pages/movie/movie-page').then((m) => ({ default: m.MoviePage })))
+const SettingsPage = lazy(() => import('@/pages/settings/settings-page').then((m) => ({ default: m.SettingsPage })))
+const WatchlistPage = lazy(() => import('@/pages/watchlist/watchlist-page').then((m) => ({ default: m.WatchlistPage })))
 
 interface RouterContext {
   queryClient: QueryClient
@@ -87,6 +92,7 @@ const routeTree = rootRoute.addChildren([
 export const router = createRouter({
   routeTree,
   context: { queryClient },
+  defaultPendingComponent: RoutePending,
   defaultPreload: 'intent',
   defaultErrorComponent: ErrorPage,
   scrollRestoration: true,

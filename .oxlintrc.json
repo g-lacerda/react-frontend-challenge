@@ -8,7 +8,7 @@
   },
   "overrides": [
     {
-      "files": ["src/shared/ui/**"],
+      "files": ["src/shared/ui/**", "src/app/router.tsx"],
       "rules": {
         "react/only-export-components": "off"
       }

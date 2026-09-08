@@ -1,16 +1,26 @@
 import { Link, Outlet } from '@tanstack/react-router'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import { UserMenu, useAuthStore } from '@/features/auth'
 import { LocaleSwitcher } from '@/features/locale'
 import { ThemeToggle, useThemeStore } from '@/features/theme'
 import { useTranslation } from '@/shared/i18n'
 import { BackToTop } from '@/shared/ui/back-to-top'
 import { Logo } from '@/shared/ui/logo'
-import { Toaster } from '@/shared/ui/sonner'
+
+// O sonner pesa ~70 kB e só aparece depois de uma ação; sai do bundle inicial.
+const Toaster = lazy(() => import('@/shared/ui/sonner').then((m) => ({ default: m.Toaster })))
 
 export function RootLayout() {
   const { t } = useTranslation()
   const theme = useThemeStore((state) => state.theme)
   const isLoggedIn = useAuthStore((state) => state.token !== null)
+
+  // Monta o Toaster depois do primeiro paint: ele não é necessário para desenhar a tela.
+  const [toasterReady, setToasterReady] = useState(false)
+  useEffect(() => {
+    const id = requestIdleCallback?.(() => setToasterReady(true)) ?? setTimeout(() => setToasterReady(true), 1)
+    return () => cancelIdleCallback?.(id as number)
+  }, [])
 
   const navItems = [
     { to: '/', label: t.nav.discover },
@@ -69,7 +79,11 @@ export function RootLayout() {
       ) : null}
 
       <BackToTop label={t.common.backToTop} />
-      <Toaster theme={theme} position="bottom-center" mobileOffset={{ bottom: 80 }} />
+      {toasterReady ? (
+        <Suspense fallback={null}>
+          <Toaster theme={theme} position="bottom-center" mobileOffset={{ bottom: 80 }} />
+        </Suspense>
+      ) : null}
     </div>
   )
 }
