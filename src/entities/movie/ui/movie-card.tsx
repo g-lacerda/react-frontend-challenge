@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { Star, Users } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { useTranslation } from '@/shared/i18n'
+import { playWhoosh } from '@/shared/lib/sounds'
 import { releaseYear } from '../lib/filter-movies'
 import { useGenreMap } from '../lib/use-genre-map'
 import type { Movie } from '../model/types'
@@ -30,11 +31,26 @@ export function MovieCard({ movie, action }: MovieCardProps) {
   const secondaryMeta = joinMeta([genre, language])
   const fullMeta = joinMeta([year, hasVotes ? t.movie.ratingLabel(rating) : null, hasVotes ? t.movie.votes(movie.voteCount, locale) : null, genre, language])
 
+  function handlePointerEnter(event: React.PointerEvent<HTMLElement>) {
+    if (event.pointerType !== 'mouse') return
+    const { left, width } = event.currentTarget.getBoundingClientRect()
+    playWhoosh((left + width / 2) / window.innerWidth)
+  }
+
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-md border border-border bg-card transition-[border-color,transform] duration-150 hover:border-ink-45">
-      <Link to="/movie/$id" params={{ id: movie.id }} className="flex flex-col outline-none focus-visible:outline-2 focus-visible:outline-foreground">
-        <MoviePoster path={movie.posterPath} alt={movie.title} />
-        <div className="grid gap-1 p-3">
+    <article
+      onPointerEnter={handlePointerEnter}
+      className="group flex flex-col overflow-hidden rounded-md border border-border bg-card transition-[border-color] duration-150 hover:border-ink-45"
+    >
+      <Link to="/movie/$id" params={{ id: movie.id }} tabIndex={-1} aria-hidden="true" className="block">
+        <MoviePoster path={movie.posterPath} alt="" />
+      </Link>
+      <div className="grid gap-3 p-3">
+        <Link
+          to="/movie/$id"
+          params={{ id: movie.id }}
+          className="grid min-w-0 flex-1 gap-1 rounded-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+        >
           <h3 className="truncate text-[13px] font-medium" title={movie.title}>
             {movie.title}
           </h3>
@@ -55,10 +71,10 @@ export function MovieCard({ movie, action }: MovieCardProps) {
               </>
             ) : null}
           </p>
-          <p className="truncate font-mono text-[10.5px] text-ink-45">{secondaryMeta || '—'}</p>
-        </div>
-      </Link>
-      {action ? <div className="absolute top-2 right-2">{action}</div> : null}
+          <p className="truncate font-mono text-[10px] text-ink-45 sm:text-[10.5px]">{secondaryMeta || '—'}</p>
+        </Link>
+        {action}
+      </div>
     </article>
   )
 }

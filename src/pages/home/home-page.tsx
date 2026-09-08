@@ -7,6 +7,7 @@ import {
   type Movie,
 } from '@/entities/movie'
 import { MovieFilters, useFiltersStore } from '@/features/movie-filters'
+import { WatchlistToggle } from '@/features/watchlist'
 import { useTranslation } from '@/shared/i18n'
 import { useDebouncedValue } from '@/shared/lib/use-debounced-value'
 import { useGridColumns } from '@/shared/lib/use-grid-columns'
@@ -82,7 +83,7 @@ export function HomePage() {
         ) : null}
 
         {movies.isPending ? (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-[repeat(auto-fill,minmax(260px,1fr))]">
             {Array.from({ length: SKELETON_COUNT }, (_, index) => (
               <MovieCardSkeleton key={index} />
             ))}
@@ -99,11 +100,11 @@ export function HomePage() {
         {items.length > 0 ? (
           <div
             ref={gridRef}
-            className="stagger grid grid-cols-2 gap-3 transition-opacity sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))]"
+            className="stagger grid grid-cols-2 gap-3 transition-opacity sm:grid-cols-[repeat(auto-fill,minmax(260px,1fr))]"
             style={{ opacity: movies.isPlaceholderData ? 0.5 : 1 }}
           >
             {visibleItems.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} />
+              <MovieCard key={movie.id} movie={movie} action={<WatchlistToggle movie={movie} />} />
             ))}
           </div>
         ) : null}

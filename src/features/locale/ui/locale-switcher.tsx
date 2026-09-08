@@ -1,5 +1,6 @@
 import { Check, Languages } from 'lucide-react'
 import { LOCALES, useLocaleStore, useTranslation } from '@/shared/i18n'
+import { playSound } from '@/shared/lib/sounds'
 import { Button } from '@/shared/ui/button'
 import {
   DropdownMenu,
@@ -13,7 +14,7 @@ export function LocaleSwitcher() {
   const setLocale = useLocaleStore((state) => state.setLocale)
 
   return (
-    <DropdownMenu>
+    <DropdownMenu onOpenChange={(open) => open && playSound('open')}>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon-sm" aria-label={t.locale.label} title={t.locale.label}>
           <Languages />
@@ -23,7 +24,10 @@ export function LocaleSwitcher() {
         {LOCALES.map((option) => (
           <DropdownMenuItem
             key={option}
-            onSelect={() => setLocale(option)}
+            onSelect={() => {
+              if (option !== locale) playSound('select')
+              setLocale(option)
+            }}
             className="justify-between text-[12.5px]"
           >
             {t.locale[option]}

@@ -5,6 +5,7 @@ import { HomePage } from '@/pages/home/home-page'
 import { LoginPage } from '@/pages/login/login-page'
 import { MoviePage } from '@/pages/movie/movie-page'
 import { NotFoundPage } from '@/pages/not-found/not-found-page'
+import { SettingsPage } from '@/pages/settings/settings-page'
 import { WatchlistPage } from '@/pages/watchlist/watchlist-page'
 import { RootLayout } from './layouts/root-layout'
 
@@ -50,6 +51,12 @@ const watchlistRoute = createRoute({
   component: WatchlistPage,
 })
 
+const settingsRoute = createRoute({
+  getParentRoute: () => authenticatedRoute,
+  path: '/settings',
+  component: SettingsPage,
+})
+
 const movieRoute = createRoute({
   getParentRoute: () => authenticatedRoute,
   path: '/movie/$id',
@@ -62,7 +69,7 @@ const movieRoute = createRoute({
 
 const routeTree = rootRoute.addChildren([
   loginRoute,
-  authenticatedRoute.addChildren([homeRoute, watchlistRoute, movieRoute]),
+  authenticatedRoute.addChildren([homeRoute, watchlistRoute, settingsRoute, movieRoute]),
 ])
 
 export const router = createRouter({

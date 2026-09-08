@@ -8,6 +8,7 @@ export function MovieCardSkeleton() {
         <Skeleton className="h-3.5 w-3/4" />
         <Skeleton className="h-2.5 w-2/3" />
         <Skeleton className="h-2.5 w-1/3" />
+        <Skeleton className="mt-1 h-8 w-full" />
       </div>
     </div>
   )

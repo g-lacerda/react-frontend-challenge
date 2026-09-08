@@ -1,6 +1,7 @@
 import { useNavigate } from '@tanstack/react-router'
-import { LogOut } from 'lucide-react'
+import { LogOut, Settings } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n'
+import { playSound } from '@/shared/lib/sounds'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,11 +23,12 @@ export function UserMenu() {
 
   function handleLogout() {
     logout()
+    playSound('logout')
     void navigate({ to: '/login' })
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu onOpenChange={(open) => open && playSound('open')}>
       <DropdownMenuTrigger
         aria-label={t.auth.menu}
         title={t.auth.menu}
@@ -40,6 +42,16 @@ export function UserMenu() {
           <span className="truncate text-[12.5px] font-normal text-foreground">{email}</span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onSelect={() => {
+            playSound('select')
+            void navigate({ to: '/settings' })
+          }}
+          className="text-[12.5px]"
+        >
+          <Settings />
+          {t.auth.settings}
+        </DropdownMenuItem>
         <DropdownMenuItem onSelect={handleLogout} className="text-[12.5px]">
           <LogOut />
           {t.auth.logout}

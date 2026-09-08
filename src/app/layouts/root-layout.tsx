@@ -69,7 +69,7 @@ export function RootLayout() {
       ) : null}
 
       <BackToTop label={t.common.backToTop} />
-      <Toaster theme={theme} position="bottom-center" />
+      <Toaster theme={theme} position="bottom-center" mobileOffset={{ bottom: 80 }} />
     </div>
   )
 }

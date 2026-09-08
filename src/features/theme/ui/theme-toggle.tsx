@@ -1,5 +1,6 @@
 import { Moon, Sun } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n'
+import { playSound } from '@/shared/lib/sounds'
 import { Button } from '@/shared/ui/button'
 import { useThemeStore } from '../model/theme-store'
 
@@ -9,8 +10,13 @@ export function ThemeToggle() {
   const toggleTheme = useThemeStore((state) => state.toggleTheme)
   const label = theme === 'dark' ? t.theme.useLight : t.theme.useDark
 
+  function handleToggle() {
+    playSound(theme === 'dark' ? 'toggleOn' : 'toggleOff')
+    toggleTheme()
+  }
+
   return (
-    <Button variant="outline" size="icon-sm" onClick={toggleTheme} aria-label={label} title={label}>
+    <Button variant="outline" size="icon-sm" onClick={handleToggle} aria-label={label} title={label}>
       {theme === 'dark' ? <Sun /> : <Moon />}
     </Button>
   )

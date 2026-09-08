@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { useTranslation } from '@/shared/i18n'
+import { playSound } from '@/shared/lib/sounds'
 import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
 import { Notice } from '@/shared/ui/notice'
@@ -34,6 +35,7 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
   async function onSubmit(values: LoginValues) {
     await new Promise((resolve) => setTimeout(resolve, 400))
     login(values.email)
+    playSound('login')
     toast.success(t.login.welcome)
     await navigate({ to: redirectTo ?? '/' })
   }
