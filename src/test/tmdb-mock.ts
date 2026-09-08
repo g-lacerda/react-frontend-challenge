@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import type { GenreDto, MovieDto, PaginatedDto } from '@/entities/movie/api/dto'
+import type { GenreDto, MovieDetailsDto, MovieDto, PaginatedDto } from '@/entities/movie/api/dto'
 
 export function makeMovieDto(overrides: Partial<MovieDto> = {}): MovieDto {
   return {
@@ -26,8 +26,23 @@ const GENRES: GenreDto[] = [
   { id: 18, name: 'Drama' },
 ]
 
+export function makeMovieDetailsDto(overrides: Partial<MovieDetailsDto> = {}): MovieDetailsDto {
+  const { genre_ids: _ignored, ...base } = makeMovieDto()
+
+  return {
+    ...base,
+    genres: [{ id: 28, name: 'Ação' }],
+    runtime: 139,
+    tagline: 'Uma frase de efeito.',
+    credits: { cast: [] },
+    videos: { results: [] },
+    ...overrides,
+  }
+}
+
 interface MockConfig {
   movies?: MovieDto[]
+  details?: MovieDetailsDto
   fail?: boolean
 }
 
@@ -35,7 +50,7 @@ interface MockConfig {
  * Substitui o fetch global por respostas da TMDB, roteando pelo caminho da URL.
  * Devolve a função espiã para inspecionar as chamadas feitas.
  */
-export function mockTmdb({ movies = [makeMovieDto()], fail = false }: MockConfig = {}) {
+export function mockTmdb({ movies = [makeMovieDto()], details, fail = false }: MockConfig = {}) {
   const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
     const url = new URL(String(input))
 
@@ -46,8 +61,10 @@ export function mockTmdb({ movies = [makeMovieDto()], fail = false }: MockConfig
     const body = url.pathname.includes('/genre/movie/list')
       ? { genres: GENRES }
       : url.pathname.includes('/configuration/languages')
-        ? [{ iso_639_1: 'en', english_name: 'English' }]
-        : page(movies)
+        ? [{ iso_639_1: 'en', english_name: 'English' }, { iso_639_1: 'xx', english_name: 'No Language' }]
+        : /\/movie\/\d+$/.test(url.pathname)
+          ? (details ?? makeMovieDetailsDto())
+          : page(movies)
 
     return new Response(JSON.stringify(body), {
       status: 200,

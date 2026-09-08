@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -104,25 +104,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 &nbsp;
@@ -134,25 +134,25 @@ interface ThemeState {
   toggleTheme: () =&gt; void
 }
 &nbsp;
-export const useThemeStore = <span class="cstat-no" title="statement not covered" >create&lt;ThemeState&gt;()(</span>
-<span class="fstat-no" title="function not covered" >  persist(</span>
-    (set) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+export const useThemeStore = create&lt;ThemeState&gt;()(
+  persist(
+    (set) =&gt; ({
       theme: 'dark',
-<span class="fstat-no" title="function not covered" >      setTheme: (t</span>heme) =&gt; <span class="cstat-no" title="statement not covered" >set({ theme }),</span>
-<span class="fstat-no" title="function not covered" >      toggleTheme: () =&gt; <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >s</span>et((s</span>tate) =&gt; (<span class="cstat-no" title="statement not covered" >{ theme: state.theme === 'dark' ? 'light' : 'dark' }))</span>,</span>
+      setTheme: (theme) =&gt; set({ theme }),
+      toggleTheme: () =&gt; set((state) =&gt; ({ theme: state.theme === 'dark' ? 'light' : 'dark' })),
     }),
     { name: 'cinedash:theme' },
   ),
 )
 &nbsp;
-function <span class="fstat-no" title="function not covered" >applyTheme(t</span>heme: Theme) {
-  const root = <span class="cstat-no" title="statement not covered" >document.documentElement</span>
-<span class="cstat-no" title="statement not covered" >  root.classList.toggle('dark', theme === 'dark')</span>
-<span class="cstat-no" title="statement not covered" >  root.style.colorScheme = theme</span>
+function applyTheme(theme: Theme) {
+  const root = document.documentElement
+  root.classList.toggle('dark', theme === 'dark')
+  root.style.colorScheme = theme
 }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >applyTheme(useThemeStore.getState().theme)</span>
-<span class="cstat-no" title="statement not covered" >useThemeStore.<span class="fstat-no" title="function not covered" >subscribe((s</span>tate) =&gt; <span class="cstat-no" title="statement not covered" >applyTheme(state.theme))</span></span>
+applyTheme(useThemeStore.getState().theme)
+useThemeStore.subscribe((state) =&gt; applyTheme(state.theme))
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -160,7 +160,7 @@ function <span class="fstat-no" title="function not covered" >applyTheme(t</span
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-09-08T23:25:12.500Z
+                at 2026-09-08T23:43:41.784Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

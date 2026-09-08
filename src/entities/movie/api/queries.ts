@@ -7,7 +7,16 @@ import { movieKeys } from './query-keys'
 
 const TMDB_MAX_PAGE = 500
 
-function fetchMoviesPage(filters: MovieFilters, page: number, language: Parameters<typeof movieApi.trending>[0]['language'], signal: AbortSignal): Promise<Paginated<Movie>> {
+/**
+ * Decide qual endpoint da TMDB atende ao estado atual dos filtros.
+ * A busca por título não aceita gênero, nota nem idioma, então esses ficam no cliente.
+ */
+export function fetchMoviesPage(
+  filters: MovieFilters,
+  page: number,
+  language: Locale,
+  signal?: AbortSignal,
+): Promise<Paginated<Movie>> {
   const query = filters.query?.trim()
 
   if (query) {

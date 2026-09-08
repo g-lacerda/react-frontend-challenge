@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">55.55% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/16</span>
+                <span class='fraction'>10/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">56.25% </span>
+                <span class="strong">58.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>9/16</span>
+                <span class='fraction'>7/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">27.27% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/11</span>
+                <span class='fraction'>4/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">53.33% </span>
+                <span class="strong">58.82% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/15</span>
+                <span class='fraction'>10/17</span>
             </div>
         
             
@@ -236,12 +236,7 @@
 <a name='L171'></a><a href='#L171'>171</a>
 <a name='L172'></a><a href='#L172'>172</a>
 <a name='L173'></a><a href='#L173'>173</a>
-<a name='L174'></a><a href='#L174'>174</a>
-<a name='L175'></a><a href='#L175'>175</a>
-<a name='L176'></a><a href='#L176'>176</a>
-<a name='L177'></a><a href='#L177'>177</a>
-<a name='L178'></a><a href='#L178'>178</a>
-<a name='L179'></a><a href='#L179'>179</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L174'></a><a href='#L174'>174</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -258,6 +253,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -392,15 +389,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">290x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -428,7 +418,7 @@ import { Combobox, type ComboboxOption } from '@/shared/ui/combobox'
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
 import { RangeField } from '@/shared/ui/range-field'
-import { NumberField } from '@/shared/ui/number-field'
+import { ThresholdField } from '@/shared/ui/threshold-field'
 import { TextField } from '@/shared/ui/text-field'
 &nbsp;
 import {
@@ -436,6 +426,8 @@ import {
   countActiveWatchlistFilters,
   type WatchlistFilterValues,
 } from '../model/watchlist-filters'
+&nbsp;
+const VOTE_PRESETS = [0, 100, 500, 1000, 5000, 10000]
 &nbsp;
 interface WatchlistFiltersProps {
   value: WatchlistFilterValues
@@ -452,7 +444,7 @@ export function WatchlistFilters({
   yearOptions,
   languageOptions,
 }: WatchlistFiltersProps) {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const panelId = useId()
   const activeCount = countActiveWatchlistFilters(value)
   const isDirty = Boolean(value.query) || activeCount &gt; 0
@@ -564,24 +556,17 @@ export function WatchlistFilters({
             /&gt;
           &lt;/div&gt;
 &nbsp;
-          &lt;div className="group/field grid gap-1.5"&gt;
-            &lt;Label
-              htmlFor="watchlist-votes"
-              className="label-mono text-ink-45 transition-colors group-focus-within/field:text-foreground"
-            &gt;
-              {t.filters.minVotes}
-            &lt;/Label&gt;
-            &lt;NumberField
-              id="watchlist-votes"
-              value={value.minVotes ?? 0}
-              min={0}
-              max={50000}
-              step={50}
-<span class="fstat-no" title="function not covered" >              onChange={(n</span>ext) =&gt; <span class="cstat-no" title="statement not covered" >patch({ minVotes: next &gt; 0 ? next : undefined })}</span>
-              decrementLabel={t.common.decrement}
-              incrementLabel={t.common.increment}
-            /&gt;
-          &lt;/div&gt;
+          &lt;ThresholdField
+            id="watchlist-votes"
+            label={t.filters.minVotes}
+            presets={VOTE_PRESETS}
+            value={value.minVotes}
+            max={100000}
+<span class="fstat-no" title="function not covered" >            onChange={(n</span>ext) =&gt; <span class="cstat-no" title="statement not covered" >patch({ minVotes: next })}</span>
+            formatOption={(votes) =&gt; t.filters.votesOption(votes, locale)}
+            anyLabel={t.filters.any}
+            customLabel={t.filters.customValue}
+          /&gt;
 &nbsp;
           &lt;Button
             variant="outline"
@@ -604,7 +589,7 @@ export function WatchlistFilters({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-09-08T23:25:12.500Z
+                at 2026-09-08T23:43:41.784Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
