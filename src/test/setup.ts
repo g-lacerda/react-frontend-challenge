@@ -26,9 +26,12 @@ class ObserverStub {
   }
 }
 
-vi.stubGlobal('IntersectionObserver', ObserverStub)
-vi.stubGlobal('ResizeObserver', ObserverStub)
-vi.stubGlobal('AudioContext', undefined)
+// Em beforeEach porque testes que usam vi.unstubAllGlobals() derrubariam estes stubs.
+beforeEach(() => {
+  vi.stubGlobal('IntersectionObserver', ObserverStub)
+  vi.stubGlobal('ResizeObserver', ObserverStub)
+  vi.stubGlobal('AudioContext', undefined)
+})
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -42,6 +45,7 @@ Object.defineProperty(window, 'matchMedia', {
   }),
 })
 
+window.scrollTo = () => {}
 window.HTMLElement.prototype.scrollIntoView = () => {}
 window.HTMLElement.prototype.scrollBy = () => {}
 window.HTMLElement.prototype.hasPointerCapture = () => false
