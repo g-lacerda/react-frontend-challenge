@@ -1,7 +1,7 @@
 import { getRouteApi } from '@tanstack/react-router'
 import { useTranslation } from '@/shared/i18n'
 
-const route = getRouteApi('/movie/$id')
+const route = getRouteApi('/authenticated/movie/$id')
 
 export function MoviePage() {
   const { id } = route.useParams()

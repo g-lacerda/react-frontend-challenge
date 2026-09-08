@@ -1,4 +1,5 @@
-import { createRootRoute, createRoute, createRouter } from '@tanstack/react-router'
+import { Outlet, createRootRoute, createRoute, createRouter, redirect } from '@tanstack/react-router'
+import { isAuthenticated } from '@/features/auth'
 import { HomePage } from '@/pages/home/home-page'
 import { LoginPage } from '@/pages/login/login-page'
 import { MoviePage } from '@/pages/movie/movie-page'
@@ -11,20 +12,44 @@ const rootRoute = createRootRoute({
   notFoundComponent: NotFoundPage,
 })
 
-const homeRoute = createRoute({
+const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
+  path: '/login',
+  validateSearch: (search: Record<string, unknown>): { redirect?: string } =>
+    typeof search.redirect === 'string' ? { redirect: search.redirect } : {},
+  beforeLoad: ({ search }) => {
+    if (isAuthenticated()) {
+      throw redirect({ to: search.redirect ?? '/' })
+    }
+  },
+  component: LoginPage,
+})
+
+const authenticatedRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  id: 'authenticated',
+  beforeLoad: ({ location }) => {
+    if (!isAuthenticated()) {
+      throw redirect({ to: '/login', search: { redirect: location.href } })
+    }
+  },
+  component: Outlet,
+})
+
+const homeRoute = createRoute({
+  getParentRoute: () => authenticatedRoute,
   path: '/',
   component: HomePage,
 })
 
 const watchlistRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => authenticatedRoute,
   path: '/watchlist',
   component: WatchlistPage,
 })
 
 const movieRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => authenticatedRoute,
   path: '/movie/$id',
   params: {
     parse: (raw) => ({ id: Number(raw.id) }),
@@ -33,13 +58,10 @@ const movieRoute = createRoute({
   component: MoviePage,
 })
 
-const loginRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/login',
-  component: LoginPage,
-})
-
-const routeTree = rootRoute.addChildren([homeRoute, watchlistRoute, movieRoute, loginRoute])
+const routeTree = rootRoute.addChildren([
+  loginRoute,
+  authenticatedRoute.addChildren([homeRoute, watchlistRoute, movieRoute]),
+])
 
 export const router = createRouter({
   routeTree,

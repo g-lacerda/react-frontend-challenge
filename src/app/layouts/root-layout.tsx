@@ -1,4 +1,5 @@
 import { Link, Outlet } from '@tanstack/react-router'
+import { LogoutButton, useAuthStore } from '@/features/auth'
 import { LocaleSwitcher } from '@/features/locale'
 import { ThemeToggle, useThemeStore } from '@/features/theme'
 import { useTranslation } from '@/shared/i18n'
@@ -8,6 +9,7 @@ import { Toaster } from '@/shared/ui/sonner'
 export function RootLayout() {
   const { t } = useTranslation()
   const theme = useThemeStore((state) => state.theme)
+  const isLoggedIn = useAuthStore((state) => state.token !== null)
 
   const navItems = [
     { to: '/', label: t.nav.discover },
@@ -23,20 +25,23 @@ export function RootLayout() {
           </Link>
 
           <nav className="flex h-full flex-1 items-stretch gap-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className="relative flex items-center px-2 font-mono text-[10.5px] tracking-[0.14em] text-ink-45 uppercase transition-colors duration-150 after:absolute after:inset-x-2 after:-bottom-px after:h-px after:origin-left after:scale-x-0 after:bg-foreground after:transition-transform after:duration-[260ms] after:ease-out-quint hover:text-foreground data-[status=active]:text-foreground data-[status=active]:after:scale-x-100"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {isLoggedIn
+              ? navItems.map((item) => (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    className="relative flex items-center px-2 font-mono text-[10.5px] tracking-[0.14em] text-ink-45 uppercase transition-colors duration-150 after:absolute after:inset-x-2 after:-bottom-px after:h-px after:origin-left after:scale-x-0 after:bg-foreground after:transition-transform after:duration-[260ms] after:ease-out-quint hover:text-foreground data-[status=active]:text-foreground data-[status=active]:after:scale-x-100"
+                  >
+                    {item.label}
+                  </Link>
+                ))
+              : null}
           </nav>
 
           <div className="flex items-center gap-2">
             <LocaleSwitcher />
             <ThemeToggle />
+            {isLoggedIn ? <LogoutButton /> : null}
           </div>
         </div>
       </header>

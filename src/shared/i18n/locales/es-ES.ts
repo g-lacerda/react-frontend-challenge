@@ -15,6 +15,23 @@ export const esES: Dictionary = {
     'en-US': 'English',
     'es-ES': 'Español',
   },
+  auth: {
+    logout: 'Salir',
+  },
+  login: {
+    eyebrow: 'Curaduría de catálogo',
+    title: 'Entrar',
+    description: 'Accede con tu correo para buscar películas y armar tu lista.',
+    email: 'Correo',
+    password: 'Contraseña',
+    passwordHint: 'Más de 6 caracteres.',
+    submit: 'Entrar',
+    welcome: 'Bienvenido de nuevo.',
+    errors: {
+      invalidEmail: 'Introduce un correo válido.',
+      shortPassword: 'La contraseña debe tener más de 6 caracteres.',
+    },
+  },
   notFound: {
     title: 'Página no encontrada',
     description: 'La dirección que visitaste no existe.',
