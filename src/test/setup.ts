@@ -1,6 +1,15 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup } from '@testing-library/react'
-import { afterEach, vi } from 'vitest'
+import { afterEach, beforeEach, vi } from 'vitest'
+import { useLocaleStore } from '@/shared/i18n'
+
+// Os textos assertados nos testes são os do português, então o idioma é fixado.
+// A jsdom reporta en-US em navigator.language, o que faria a store detectar inglês.
+useLocaleStore.setState({ locale: 'pt-BR' })
+
+beforeEach(() => {
+  useLocaleStore.setState({ locale: 'pt-BR' })
+})
 
 afterEach(() => {
   cleanup()

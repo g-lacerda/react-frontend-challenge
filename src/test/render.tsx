@@ -47,29 +47,36 @@ interface RouteConfig {
 /**
  * Monta um componente dentro de um roteador em memória.
  * Necessário para qualquer componente que use Link ou useNavigate.
+ * É assíncrono porque o TanStack Router resolve a rota antes da primeira pintura.
  */
-export function renderWithRouter(
+export async function renderWithRouter(
   ui: ReactNode,
   { path = '/', initialPath = path, queryClient = createTestQueryClient() }: RouteConfig = {},
 ) {
   const user = userEvent.setup()
 
   const rootRoute = createRootRoute()
-  const routes = [
-    createRoute({ getParentRoute: () => rootRoute, path, component: () => <>{ui}</> }),
-    createRoute({ getParentRoute: () => rootRoute, path: '/movie/$id', component: () => <p>página do filme</p> }),
-    createRoute({ getParentRoute: () => rootRoute, path: '/login', component: () => <p>página de login</p> }),
-  ].filter((route, index) => index === 0 || route.fullPath !== path)
+  const extras = [
+    { path: '/movie/$id', label: 'página do filme' },
+    { path: '/login', label: 'página de login' },
+    { path: '/', label: 'página inicial' },
+  ].filter((route) => route.path !== path)
 
   const router = createRouter({
-    routeTree: rootRoute.addChildren(routes),
+    routeTree: rootRoute.addChildren([
+      createRoute({ getParentRoute: () => rootRoute, path, component: () => <>{ui}</> }),
+      ...extras.map((route) =>
+        createRoute({ getParentRoute: () => rootRoute, path: route.path, component: () => <p>{route.label}</p> }),
+      ),
+    ]),
     history: createMemoryHistory({ initialEntries: [initialPath] }),
   })
+
+  await router.load()
 
   const result = rtlRender(
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
         <RouterProvider router={router as never} />
       </TooltipProvider>
     </QueryClientProvider>,
