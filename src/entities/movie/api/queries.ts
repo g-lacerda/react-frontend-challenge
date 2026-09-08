@@ -1,6 +1,7 @@
 import { keepPreviousData, queryOptions, useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { useLocaleStore, type Locale } from '@/shared/i18n'
 import { filterMovies, hasActiveFilters } from '../lib/filter-movies'
+import { SEARCH_MAX_LENGTH } from '../model/types'
 import type { Movie, MovieFilters, Paginated } from '../model/types'
 import { movieApi } from './movie-api'
 import { movieKeys } from './query-keys'
@@ -17,7 +18,7 @@ export function fetchMoviesPage(
   language: Locale,
   signal?: AbortSignal,
 ): Promise<Paginated<Movie>> {
-  const query = filters.query?.trim()
+  const query = filters.query?.trim().slice(0, SEARCH_MAX_LENGTH)
 
   if (query) {
     return movieApi.search({ query, year: filters.year, page, language }, signal).then((result) => ({

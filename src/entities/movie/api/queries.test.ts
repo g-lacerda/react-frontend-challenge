@@ -75,6 +75,17 @@ describe('fetchMoviesPage', () => {
     expect(resultado.results).toHaveLength(1)
   })
 
+  // A TMDB recusa buscas acima de 500 caracteres com erro 400.
+  it('corta a busca no limite aceito pela API', async () => {
+    const gigante = 'a'.repeat(700)
+    await fetchMoviesPage({ query: gigante }, 1, 'pt-BR')
+
+    expect(movieApi.search).toHaveBeenCalledWith(
+      expect.objectContaining({ query: 'a'.repeat(500) }),
+      undefined,
+    )
+  })
+
   it('repassa o sinal de cancelamento adiante', async () => {
     const signal = new AbortController().signal
     await fetchMoviesPage({}, 1, 'pt-BR', signal)

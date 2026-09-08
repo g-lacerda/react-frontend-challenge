@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 import {
+  SEARCH_MAX_LENGTH,
   MovieCard,
   MovieCardSkeleton,
   hasActiveFilters,
@@ -21,7 +22,7 @@ const SKELETON_COUNT = 12
 export function HomePage() {
   const { t } = useTranslation()
   const storedFilters = useFiltersStore((state) => state.filters)
-  const debouncedQuery = useDebouncedValue(storedFilters.query ?? '')
+  const debouncedQuery = useDebouncedValue((storedFilters.query ?? '').slice(0, SEARCH_MAX_LENGTH))
 
   const filters = useMemo(
     () => ({ ...storedFilters, query: debouncedQuery }),
@@ -70,8 +71,12 @@ export function HomePage() {
           {movies.isPending ? t.common.loading : t.discover.count(total)}
         </p>
         <div className="flex items-baseline justify-between gap-3">
-          <h2 className="text-lg">{heading}</h2>
-          {movies.isSuccess ? <span className="label-mono text-ink-45">{t.discover.count(total)}</span> : null}
+          <h2 className="line-clamp-2 min-w-0 text-lg [overflow-wrap:anywhere]" title={heading}>
+            {heading}
+          </h2>
+          {movies.isSuccess ? (
+            <span className="label-mono shrink-0 text-ink-45">{t.discover.count(total)}</span>
+          ) : null}
         </div>
 
         {movies.isError ? (

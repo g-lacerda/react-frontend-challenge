@@ -35,6 +35,12 @@ describe('store de filtros', () => {
     expect(filters().genreId).toBeUndefined()
   })
 
+  it('não guarda uma busca maior do que a API aceita', () => {
+    useFiltersStore.getState().setQuery('a'.repeat(700))
+
+    expect(filters().query).toHaveLength(500)
+  })
+
   it('limpa tudo, inclusive a busca', () => {
     useFiltersStore.getState().setQuery('duna')
     useFiltersStore.getState().patch({ genreId: 28, minRating: 7 })

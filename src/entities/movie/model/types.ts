@@ -55,6 +55,9 @@ export const SORT_OPTIONS = [
 
 export type SortOption = (typeof SORT_OPTIONS)[number]
 
+/** A TMDB recusa buscas acima disso com erro 400. */
+export const SEARCH_MAX_LENGTH = 500
+
 export interface MovieFilters {
   query?: string
   genreId?: number

@@ -1,6 +1,7 @@
 import { Search, SlidersHorizontal, X } from 'lucide-react'
 import { useId, useState } from 'react'
 import { cn } from 'cn'
+import { SEARCH_MAX_LENGTH } from '@/entities/movie'
 import { useTranslation } from '@/shared/i18n'
 import { Button } from '@/shared/ui/button'
 import { Combobox, type ComboboxOption } from '@/shared/ui/combobox'
@@ -56,6 +57,7 @@ export function WatchlistFilters({
               onChange={(event) => patch({ query: event.target.value })}
               placeholder={t.filters.searchPlaceholder}
               autoComplete="off"
+              maxLength={SEARCH_MAX_LENGTH}
             />
           </div>
         </TextField>

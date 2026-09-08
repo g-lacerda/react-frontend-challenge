@@ -1,7 +1,14 @@
 import { Search, SlidersHorizontal, X } from 'lucide-react'
 import { useId, useMemo, useState } from 'react'
 import { cn } from 'cn'
-import { SORT_OPTIONS, countActiveFilters, useGenres, useLanguages, type SortOption } from '@/entities/movie'
+import {
+  SEARCH_MAX_LENGTH,
+  SORT_OPTIONS,
+  countActiveFilters,
+  useGenres,
+  useLanguages,
+  type SortOption,
+} from '@/entities/movie'
 import { useTranslation } from '@/shared/i18n'
 import { Button } from '@/shared/ui/button'
 import { Combobox, type ComboboxOption } from '@/shared/ui/combobox'
@@ -117,6 +124,7 @@ export function MovieFilters() {
               onChange={(event) => setQuery(event.target.value)}
               placeholder={t.filters.searchPlaceholder}
               autoComplete="off"
+              maxLength={SEARCH_MAX_LENGTH}
             />
           </div>
         </TextField>
