@@ -112,6 +112,7 @@ export function ThresholdField({
               id={`${id}-custom`}
               type="text"
               inputMode="numeric"
+              enterKeyHint="done"
               value={draft === 0 ? '' : String(draft)}
               placeholder="0"
               onChange={(event) => digitar(event.target.value)}
@@ -123,7 +124,8 @@ export function ThresholdField({
               }}
               className="font-mono text-xs"
             />
-            <p className="text-[11px] text-ink-45">{t.filters.pressEnter}</p>
+            {/* No celular não há tecla Enter à vista, e o atraso já aplica sozinho. */}
+            <p className="hidden text-[11px] text-ink-45 sm:block">{t.filters.pressEnter}</p>
           </div>
         </PopoverContent>
       </Popover>
