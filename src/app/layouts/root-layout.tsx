@@ -2,6 +2,7 @@ import { Link, Outlet } from '@tanstack/react-router'
 import { LocaleSwitcher } from '@/features/locale'
 import { ThemeToggle, useThemeStore } from '@/features/theme'
 import { useTranslation } from '@/shared/i18n'
+import { Logo } from '@/shared/ui/logo'
 import { Toaster } from '@/shared/ui/sonner'
 
 export function RootLayout() {
@@ -17,8 +18,8 @@ export function RootLayout() {
     <div className="flex min-h-svh flex-col">
       <header className="sticky top-0 z-10 border-b border-border bg-background">
         <div className="mx-auto flex h-14 w-full max-w-5xl items-center gap-4 px-4 sm:px-6">
-          <Link to="/" className="text-[15px] font-semibold tracking-[-0.02em]">
-            CineDash
+          <Link to="/" aria-label="CineDash" className="flex items-center">
+            <Logo className="h-7 sm:h-8" />
           </Link>
 
           <nav className="flex h-full flex-1 items-stretch gap-1">
