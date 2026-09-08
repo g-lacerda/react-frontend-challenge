@@ -7,12 +7,13 @@ import { Button } from '@/shared/ui/button'
 import { Combobox, type ComboboxOption } from '@/shared/ui/combobox'
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
-import { NumberField } from '@/shared/ui/number-field'
+import { ThresholdField } from '@/shared/ui/threshold-field'
 import { TextField } from '@/shared/ui/text-field'
 import { useFiltersStore } from '../model/filters-store'
 import { RangeField } from '@/shared/ui/range-field'
 
 const CURRENT_YEAR = new Date().getFullYear()
+const VOTE_PRESETS = [0, 100, 500, 1000, 5000, 10000]
 const YEAR_OPTIONS: ComboboxOption[] = Array.from({ length: CURRENT_YEAR - 1949 }, (_, index) => {
   const year = String(CURRENT_YEAR - index)
   return { value: year, label: year }
@@ -188,18 +189,17 @@ export function MovieFilters() {
             />
           </FilterField>
 
-          <FilterField id="votes" label={t.filters.minVotes}>
-            <NumberField
-              id="votes"
-              value={minVotes ?? 0}
-              min={0}
-              max={50000}
-              step={50}
-              onChange={(next) => patch({ minVotes: next > 0 ? next : undefined })}
-              decrementLabel={t.common.decrement}
-              incrementLabel={t.common.increment}
-            />
-          </FilterField>
+          <ThresholdField
+            id="votes"
+            label={t.filters.minVotes}
+            presets={VOTE_PRESETS}
+            value={minVotes}
+            max={100000}
+            onChange={(next) => patch({ minVotes: next })}
+            formatOption={(votes) => t.filters.votesOption(votes, locale)}
+            anyLabel={t.filters.any}
+            customLabel={t.filters.customValue}
+          />
 
           <RangeField
             id="runtime"

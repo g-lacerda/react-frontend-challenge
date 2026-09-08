@@ -7,7 +7,7 @@ import { Combobox, type ComboboxOption } from '@/shared/ui/combobox'
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
 import { RangeField } from '@/shared/ui/range-field'
-import { NumberField } from '@/shared/ui/number-field'
+import { ThresholdField } from '@/shared/ui/threshold-field'
 import { TextField } from '@/shared/ui/text-field'
 
 import {
@@ -15,6 +15,8 @@ import {
   countActiveWatchlistFilters,
   type WatchlistFilterValues,
 } from '../model/watchlist-filters'
+
+const VOTE_PRESETS = [0, 100, 500, 1000, 5000, 10000]
 
 interface WatchlistFiltersProps {
   value: WatchlistFilterValues
@@ -31,7 +33,7 @@ export function WatchlistFilters({
   yearOptions,
   languageOptions,
 }: WatchlistFiltersProps) {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const panelId = useId()
   const activeCount = countActiveWatchlistFilters(value)
   const isDirty = Boolean(value.query) || activeCount > 0
@@ -143,24 +145,17 @@ export function WatchlistFilters({
             />
           </div>
 
-          <div className="group/field grid gap-1.5">
-            <Label
-              htmlFor="watchlist-votes"
-              className="label-mono text-ink-45 transition-colors group-focus-within/field:text-foreground"
-            >
-              {t.filters.minVotes}
-            </Label>
-            <NumberField
-              id="watchlist-votes"
-              value={value.minVotes ?? 0}
-              min={0}
-              max={50000}
-              step={50}
-              onChange={(next) => patch({ minVotes: next > 0 ? next : undefined })}
-              decrementLabel={t.common.decrement}
-              incrementLabel={t.common.increment}
-            />
-          </div>
+          <ThresholdField
+            id="watchlist-votes"
+            label={t.filters.minVotes}
+            presets={VOTE_PRESETS}
+            value={value.minVotes}
+            max={100000}
+            onChange={(next) => patch({ minVotes: next })}
+            formatOption={(votes) => t.filters.votesOption(votes, locale)}
+            anyLabel={t.filters.any}
+            customLabel={t.filters.customValue}
+          />
 
           <Button
             variant="outline"
