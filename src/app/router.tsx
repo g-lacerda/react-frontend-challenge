@@ -1,4 +1,8 @@
-import { Outlet, createRootRoute, createRoute, createRouter, redirect } from '@tanstack/react-router'
+import type { QueryClient } from '@tanstack/react-query'
+import { Outlet, createRootRouteWithContext, createRoute, createRouter, redirect } from '@tanstack/react-router'
+import { movieDetailsOptions } from '@/entities/movie'
+import { useLocaleStore } from '@/shared/i18n'
+import { queryClient } from './providers/query-client'
 import { isAuthenticated } from '@/features/auth'
 import { ErrorPage } from '@/pages/error/error-page'
 import { HomePage } from '@/pages/home/home-page'
@@ -9,7 +13,11 @@ import { SettingsPage } from '@/pages/settings/settings-page'
 import { WatchlistPage } from '@/pages/watchlist/watchlist-page'
 import { RootLayout } from './layouts/root-layout'
 
-const rootRoute = createRootRoute({
+interface RouterContext {
+  queryClient: QueryClient
+}
+
+const rootRoute = createRootRouteWithContext<RouterContext>()({
   component: RootLayout,
   notFoundComponent: NotFoundPage,
   errorComponent: ErrorPage,
@@ -64,6 +72,10 @@ const movieRoute = createRoute({
     parse: (raw) => ({ id: Number(raw.id) }),
     stringify: (params) => ({ id: String(params.id) }),
   },
+  loader: ({ context, params }) => {
+    const language = useLocaleStore.getState().locale
+    void context.queryClient.prefetchQuery(movieDetailsOptions(params.id, language))
+  },
   component: MoviePage,
 })
 
@@ -74,6 +86,7 @@ const routeTree = rootRoute.addChildren([
 
 export const router = createRouter({
   routeTree,
+  context: { queryClient },
   defaultPreload: 'intent',
   defaultErrorComponent: ErrorPage,
   scrollRestoration: true,

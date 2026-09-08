@@ -5,6 +5,7 @@ import type { Movie } from '@/entities/movie'
 import { useTranslation } from '@/shared/i18n'
 import { playSound } from '@/shared/lib/sounds'
 import { Button } from '@/shared/ui/button'
+import { WithTooltip } from '@/shared/ui/with-tooltip'
 import { useIsInWatchlist, useWatchlistStore } from '../model/watchlist-store'
 
 interface WatchlistToggleProps {
@@ -35,17 +36,18 @@ export function WatchlistToggle({ movie, size = 'sm', className }: WatchlistTogg
   const Icon = isSaved ? BookmarkCheck : Bookmark
 
   return (
-    <Button
-      variant={isSaved ? 'default' : 'outline'}
-      size={size}
-      onClick={toggle}
-      aria-pressed={isSaved}
-      aria-label={label}
-      title={label}
-      className={cn(size === 'sm' && 'w-full', className)}
-    >
-      <Icon key={String(isSaved)} className="animate-pop" />
-      {isSaved ? t.watchlist.saved : t.watchlist.save}
-    </Button>
+    <WithTooltip label={label}>
+      <Button
+        variant={isSaved ? 'default' : 'outline'}
+        size={size}
+        onClick={toggle}
+        aria-pressed={isSaved}
+        aria-label={label}
+        className={cn(size === 'sm' && 'w-full', className)}
+      >
+        <Icon key={String(isSaved)} className="animate-pop" />
+        {isSaved ? t.watchlist.saved : t.watchlist.save}
+      </Button>
+    </WithTooltip>
   )
 }

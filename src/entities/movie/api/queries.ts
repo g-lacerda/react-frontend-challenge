@@ -1,5 +1,5 @@
-import { keepPreviousData, useInfiniteQuery, useQuery } from '@tanstack/react-query'
-import { useLocaleStore } from '@/shared/i18n'
+import { keepPreviousData, queryOptions, useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { useLocaleStore, type Locale } from '@/shared/i18n'
 import { filterMovies, hasActiveFilters } from '../lib/filter-movies'
 import type { Movie, MovieFilters, Paginated } from '../model/types'
 import { movieApi } from './movie-api'
@@ -55,11 +55,14 @@ export function useLanguages() {
   })
 }
 
-export function useMovieDetails(id: number) {
-  const language = useLocaleStore((state) => state.locale)
-
-  return useQuery({
+export function movieDetailsOptions(id: number, language: Locale) {
+  return queryOptions({
     queryKey: movieKeys.details(language, id),
     queryFn: ({ signal }) => movieApi.details({ id, language }, signal),
   })
+}
+
+export function useMovieDetails(id: number) {
+  const language = useLocaleStore((state) => state.locale)
+  return useQuery(movieDetailsOptions(id, language))
 }

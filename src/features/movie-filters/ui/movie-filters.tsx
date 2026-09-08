@@ -10,7 +10,7 @@ import { Label } from '@/shared/ui/label'
 import { NumberField } from '@/shared/ui/number-field'
 import { TextField } from '@/shared/ui/text-field'
 import { useFiltersStore } from '../model/filters-store'
-import { RangeField } from './range-field'
+import { RangeField } from '@/shared/ui/range-field'
 
 const CURRENT_YEAR = new Date().getFullYear()
 const YEAR_OPTIONS: ComboboxOption[] = Array.from({ length: CURRENT_YEAR - 1949 }, (_, index) => {

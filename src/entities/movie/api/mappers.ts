@@ -25,6 +25,10 @@ function toCastMember(dto: CastMemberDto): CastMember {
   }
 }
 
+function sortByPhoto(cast: CastMemberDto[]): CastMemberDto[] {
+  return [...cast].sort((a, b) => Number(Boolean(b.profile_path)) - Number(Boolean(a.profile_path)))
+}
+
 export function pickTrailerKey(videos: VideoDto[]): string | null {
   const youtube = videos.filter((video) => video.site === 'YouTube')
   const trailer =
@@ -43,7 +47,7 @@ export function toMovieDetails(dto: MovieDetailsDto): MovieDetails {
     genres,
     runtime,
     tagline,
-    cast: credits.cast.slice(0, 12).map(toCastMember),
+    cast: sortByPhoto(credits.cast).slice(0, 12).map(toCastMember),
     trailerKey: pickTrailerKey(videos.results),
   }
 }

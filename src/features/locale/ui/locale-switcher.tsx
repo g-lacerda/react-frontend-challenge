@@ -2,6 +2,7 @@ import { Check, Languages } from 'lucide-react'
 import { LOCALES, useLocaleStore, useTranslation } from '@/shared/i18n'
 import { playSound } from '@/shared/lib/sounds'
 import { Button } from '@/shared/ui/button'
+import { WithTooltip } from '@/shared/ui/with-tooltip'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,11 +16,13 @@ export function LocaleSwitcher() {
 
   return (
     <DropdownMenu onOpenChange={(open) => open && playSound('open')}>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon-sm" aria-label={t.locale.label} title={t.locale.label}>
-          <Languages />
-        </Button>
-      </DropdownMenuTrigger>
+      <WithTooltip label={t.locale.label}>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="icon-sm" aria-label={t.locale.label}>
+            <Languages />
+          </Button>
+        </DropdownMenuTrigger>
+      </WithTooltip>
       <DropdownMenuContent align="end" className="min-w-36">
         {LOCALES.map((option) => (
           <DropdownMenuItem

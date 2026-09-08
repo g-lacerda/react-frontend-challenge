@@ -2,6 +2,7 @@ import * as React from "react"
 import { cn } from "cn"
 import { MinusIcon, PlusIcon } from "lucide-react"
 import { Input } from "./input"
+import { WithTooltip } from "./with-tooltip"
 
 interface NumberFieldProps extends Omit<React.ComponentProps<"input">, "value" | "onChange" | "type"> {
   value: number
@@ -41,9 +42,11 @@ function NumberField({
 
   return (
     <div data-slot="number-field" className={cn("flex items-end gap-1", className)}>
-      <button type="button" tabIndex={-1} aria-label={decrementLabel} onClick={() => stepBy(-1)} disabled={value <= min} className={stepperClass}>
-        <MinusIcon />
-      </button>
+      <WithTooltip label={decrementLabel}>
+        <button type="button" tabIndex={-1} aria-label={decrementLabel} onClick={() => stepBy(-1)} disabled={value <= min} className={stepperClass}>
+          <MinusIcon />
+        </button>
+      </WithTooltip>
       <Input
         type="number"
         inputMode="decimal"
@@ -55,9 +58,11 @@ function NumberField({
         className="text-center font-mono text-xs"
         {...props}
       />
-      <button type="button" tabIndex={-1} aria-label={incrementLabel} onClick={() => stepBy(1)} disabled={value >= max} className={stepperClass}>
-        <PlusIcon />
-      </button>
+      <WithTooltip label={incrementLabel}>
+        <button type="button" tabIndex={-1} aria-label={incrementLabel} onClick={() => stepBy(1)} disabled={value >= max} className={stepperClass}>
+          <PlusIcon />
+        </button>
+      </WithTooltip>
     </div>
   )
 }

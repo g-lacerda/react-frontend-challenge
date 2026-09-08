@@ -2,6 +2,7 @@ import { Moon, Sun } from 'lucide-react'
 import { useTranslation } from '@/shared/i18n'
 import { playSound } from '@/shared/lib/sounds'
 import { Button } from '@/shared/ui/button'
+import { WithTooltip } from '@/shared/ui/with-tooltip'
 import { useThemeStore } from '../model/theme-store'
 
 export function ThemeToggle() {
@@ -16,8 +17,10 @@ export function ThemeToggle() {
   }
 
   return (
-    <Button variant="outline" size="icon-sm" onClick={handleToggle} aria-label={label} title={label}>
-      {theme === 'dark' ? <Sun /> : <Moon />}
-    </Button>
+    <WithTooltip label={label}>
+      <Button variant="outline" size="icon-sm" onClick={handleToggle} aria-label={label}>
+        {theme === 'dark' ? <Sun /> : <Moon />}
+      </Button>
+    </WithTooltip>
   )
 }

@@ -3,9 +3,11 @@ import { Star, Users } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { useTranslation } from '@/shared/i18n'
 import { playWhoosh } from '@/shared/lib/sounds'
+import { WithTooltip } from '@/shared/ui/with-tooltip'
 import { releaseYear } from '../lib/filter-movies'
 import { useGenreMap } from '../lib/use-genre-map'
 import type { Movie } from '../model/types'
+import { GenreBadges } from './genre-badges'
 import { MoviePoster } from './movie-poster'
 
 interface MovieCardProps {
@@ -25,11 +27,16 @@ export function MovieCard({ movie, action }: MovieCardProps) {
   const hasVotes = movie.voteCount > 0
   const rating = movie.voteAverage.toFixed(1)
   const compactVotes = new Intl.NumberFormat(locale, { notation: 'compact' }).format(movie.voteCount)
-  const genre = movie.genreIds.map((id) => genreMap.get(id)).find(Boolean)
+  const genres = movie.genreIds.map((id) => genreMap.get(id)).filter((name): name is string => Boolean(name))
   const language = movie.originalLanguage?.toUpperCase() || null
 
-  const secondaryMeta = joinMeta([genre, language])
-  const fullMeta = joinMeta([year, hasVotes ? t.movie.ratingLabel(rating) : null, hasVotes ? t.movie.votes(movie.voteCount, locale) : null, genre, language])
+  const fullMeta = joinMeta([
+    year,
+    hasVotes ? t.movie.ratingLabel(rating) : null,
+    hasVotes ? t.movie.votes(movie.voteCount, locale) : null,
+    genres.join(', '),
+    language,
+  ])
 
   function handlePointerEnter(event: React.PointerEvent<HTMLElement>) {
     if (event.pointerType !== 'mouse') return
@@ -54,24 +61,47 @@ export function MovieCard({ movie, action }: MovieCardProps) {
           <h3 className="truncate text-[13px] font-medium" title={movie.title}>
             {movie.title}
           </h3>
-          <p className="flex min-w-0 items-center gap-1 font-mono text-[10px] text-ink-70 sm:gap-1.5 sm:text-[10.5px]" title={fullMeta} aria-label={fullMeta}>
+          <p
+            className="flex min-w-0 items-center gap-1 font-mono text-[10px] text-ink-70 sm:gap-1.5 sm:text-[10.5px]"
+            title={fullMeta}
+            aria-label={fullMeta}
+          >
             {year ? <span>{year}</span> : null}
             {hasVotes ? (
               <>
                 <span aria-hidden="true">·</span>
-                <span className="inline-flex items-center gap-0.5">
-                  <Star className="size-3" aria-hidden="true" />
-                  {rating}
-                </span>
+                <WithTooltip label={t.movie.ratingLabel(rating)} side="top">
+                  <span className="inline-flex items-center gap-0.5" tabIndex={-1}>
+                    <Star className="size-3" aria-hidden="true" />
+                    {rating}
+                  </span>
+                </WithTooltip>
                 <span aria-hidden="true">·</span>
-                <span className="inline-flex min-w-0 items-center gap-0.5">
-                  <Users className="size-3 shrink-0" aria-hidden="true" />
-                  <span className="truncate">{compactVotes}</span>
-                </span>
+                <WithTooltip label={t.movie.votes(movie.voteCount, locale)} side="top">
+                  <span className="inline-flex min-w-0 items-center gap-0.5" tabIndex={-1}>
+                    <Users className="size-3 shrink-0" aria-hidden="true" />
+                    <span className="truncate">{compactVotes}</span>
+                  </span>
+                </WithTooltip>
               </>
             ) : null}
           </p>
-          <p className="truncate font-mono text-[10px] text-ink-45 sm:text-[10.5px]">{secondaryMeta || '—'}</p>
+          <div className="flex min-w-0 items-center gap-1.5">
+            <GenreBadges genres={genres} max={2} label={t.filters.genre} />
+            {language ? (
+              <WithTooltip label={t.filters.language} side="top">
+                <span
+                  className="ml-auto shrink-0 font-mono text-[10px] text-ink-45 sm:text-[10.5px]"
+                  tabIndex={-1}
+                >
+                  {language}
+                </span>
+              </WithTooltip>
+            ) : null}
+            {genres.length === 0 && !language ? (
+              <span className="font-mono text-[10px] text-ink-45">—</span>
+            ) : null}
+          </div>
         </Link>
         {action}
       </div>
