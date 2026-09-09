@@ -61,6 +61,7 @@ Resolução da **Opção A** do desafio técnico para Desenvolvedor React Pleno.
 npm install
 cp .env.example .env.local   # preencha com seu token de leitura da TMDB
 npm run dev
+npm test                     # roda a suíte de testes
 ```
 
 O passo a passo completo, incluindo como obter o token, está em [INSTRUCTIONS.md](INSTRUCTIONS.md).
@@ -82,6 +83,7 @@ O raciocínio por trás de cada escolha, incluindo o que a API do TMDB não perm
 
 ## Qualidade
 
+- **Testes** com Vitest e Testing Library: 154 no total, cobrindo regras de filtro, adaptadores da API, stores e os fluxos de entrar, descobrir e salvar na lista.
 - **Acessibilidade** verificada com axe em todas as telas, nos dois temas e com menus abertos: nenhuma violação. Navegação completa por teclado, contraste dentro da WCAG AA e rótulos para leitor de tela.
 - **Performance** com divisão do pacote por rota. Sair da descoberta para a lista baixa 10 kB.
 - **Tipagem** sem `any`, com os dicionários de tradução conferidos em tempo de compilação.

@@ -60,6 +60,9 @@ senha1234
 | `npm run dev` | Servidor de desenvolvimento com recarga automática |
 | `npm run build` | Verifica os tipos e gera a versão de produção em `dist/` |
 | `npm run preview` | Serve a versão de produção localmente |
+| `npm test` | Roda a suíte de testes uma vez |
+| `npm run test:watch` | Roda os testes em modo contínuo |
+| `npm run test:coverage` | Roda os testes e mede a cobertura |
 | `npm run lint` | Análise estática com oxlint |
 
 ## Onde ficam as preferências

@@ -133,6 +133,23 @@ O que foi feito além do automático:
 - Miniaturas decorativas escondidas do leitor de tela, já que o título ao lado identifica o filme.
 - Todas as animações respeitam a preferência de movimento reduzido do sistema.
 
+## Testes
+
+São 154 testes com Vitest e Testing Library, divididos por natureza:
+
+| Camada | O que verifica |
+|---|---|
+| Funções puras | Filtros do cliente, adaptadores da TMDB, escolha do trailer, iniciais |
+| Regras de API | Qual endpoint atende cada estado dos filtros e como os parâmetros são montados |
+| Validação e estado | Schema do login e as cinco stores, incluindo a persistência |
+| Hooks | Atraso da busca e detecção de fim de lista |
+| Componentes | Botão de salvar, badges de gênero e o campo de valor mínimo |
+| Fluxos | Entrar, descobrir, salvar na lista e abrir os detalhes, com a API interceptada |
+
+A cobertura fica em 62% no total, e acima de 95% nas camadas que concentram regra: os filtros e a API do filme. O que não é coberto são componentes de apresentação e configuração, onde teste custaria mais do que protege.
+
+Duas decisões que valem registro. A primeira é que testes que passam não provam nada sozinhos: introduzi defeitos de propósito em quatro pontos do código, como trocar a comparação com indefinido por checagem de verdade no filtro de nota, e confirmei que os testes falham. A segunda é que os testes de fluxo montam a árvore React de verdade, com roteador e cliques reais, interceptando apenas a rede. Isso cobre o mesmo que um teste de navegador cobriria, em segundos e sem exigir navegador instalado nem token válido para rodar.
+
 ## Performance
 
 O pacote é dividido por rota: cada tela é um arquivo próprio, baixado quando a rota abre. Ir da descoberta para a lista baixa 10 kB.
@@ -157,13 +174,14 @@ Isso tem um efeito visível: filtrando no cliente, a API manda vinte resultados 
 
 **O pôster muda ao trocar o idioma.** Não é um defeito: a TMDB guarda uma arte por idioma, com o título impresso, e devolve a correspondente. Faz sentido para curadoria, já que é a arte que o público daquele idioma veria. Seria possível pedir a versão sem texto, ao custo de uma imagem mais genérica.
 
+**A busca tem um teto de quinhentos caracteres.** Acima disso a API responde com erro 400 e a mensagem sobre o comprimento máximo, o que aparecia para o usuário como falha de carregamento. O limite é aplicado no campo, ao guardar o filtro e ao montar a requisição, cobrindo também um valor grande já salvo no navegador. O mesmo texto quebrava o layout no título dos resultados, porque uma palavra sem espaços não quebra por padrão.
+
 **Campos ausentes sem aviso.** `original_language` e `release_date` às vezes não vêm. O adaptador trata isso, e a interface mostra um traço no lugar.
 
 **Filmes com poucos votos distorcem o filtro de nota.** Filtrar por nota 9 ou mais trazia filmes com dois votos e nota 10. Quando há filtro de nota e o usuário não definiu um mínimo de votos, é aplicado um mínimo de cinquenta.
 
 ## O que eu faria diferente com mais tempo
 
-- **Testes automatizados.** A stack exige Vitest e Testing Library, e as funções puras já foram escritas pensando nisso: os filtros do cliente, os adaptadores e a escolha do trailer não dependem de React.
 - **Virtualização da lista.** Depois de várias páginas, a grade acumula centenas de nós. Com TanStack Virtual, só o visível seria renderizado.
 - **Estado dos filtros na URL.** Hoje os filtros são persistidos, mas não compartilháveis. Colocá-los na busca da URL permitiria mandar um link de "melhores dramas coreanos de 2019".
 - **Sincronizar a lista com um servidor.** O `localStorage` não atravessa dispositivos.
