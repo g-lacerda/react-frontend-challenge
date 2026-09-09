@@ -37,9 +37,9 @@ export function RootLayout() {
       </a>
 
       <header className="sticky top-0 z-10 border-b border-border bg-background">
-        <div className="mx-auto flex h-14 w-full max-w-[1600px] items-center gap-4 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex h-14 w-full max-w-[1600px] items-center gap-4 px-4 sm:h-16 sm:gap-6 sm:px-6 lg:px-8">
           <Link to="/" aria-label="CineDash" className="flex items-center">
-            <Logo className="h-7 sm:h-8" />
+            <Logo className="h-7 sm:h-9" />
           </Link>
 
           <nav aria-label={t.nav.label} className="hidden h-full flex-1 items-stretch gap-1 sm:flex">
@@ -48,7 +48,7 @@ export function RootLayout() {
                   <Link
                     key={item.to}
                     to={item.to}
-                    className="relative flex items-center px-2.5 font-mono text-xs tracking-[0.12em] text-ink-45 uppercase transition-colors duration-150 after:absolute after:inset-x-2 after:-bottom-px after:h-px after:origin-left after:scale-x-0 after:bg-foreground after:transition-transform after:duration-[260ms] after:ease-out-quint hover:text-foreground data-[status=active]:text-foreground data-[status=active]:after:scale-x-100"
+                    className="relative flex items-center px-3 font-mono text-xs tracking-[0.12em] text-ink-45 uppercase sm:text-[13px] transition-colors duration-150 after:absolute after:inset-x-2 after:-bottom-px after:h-px after:origin-left after:scale-x-0 after:bg-foreground after:transition-transform after:duration-[260ms] after:ease-out-quint hover:text-foreground data-[status=active]:text-foreground data-[status=active]:after:scale-x-100"
                   >
                     {item.label}
                   </Link>

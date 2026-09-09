@@ -18,7 +18,7 @@ export function ThemeToggle() {
 
   return (
     <WithTooltip label={label}>
-      <Button variant="outline" size="icon-sm" onClick={handleToggle} aria-label={label}>
+      <Button variant="outline" size="icon-sm" onClick={handleToggle} aria-label={label} className="sm:size-9">
         {theme === 'dark' ? <Sun /> : <Moon />}
       </Button>
     </WithTooltip>

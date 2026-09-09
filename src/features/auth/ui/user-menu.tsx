@@ -33,7 +33,7 @@ export function UserMenu() {
       <WithTooltip label={t.auth.menu}>
         <DropdownMenuTrigger
           aria-label={t.auth.menu}
-          className="grid size-8 place-items-center rounded-full border border-input font-mono text-[11px] text-ink-70 transition-colors duration-150 outline-none select-none hover:border-ink-45 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground aria-expanded:border-foreground aria-expanded:text-foreground"
+          className="grid size-8 place-items-center rounded-full border border-input font-mono text-[11px] sm:size-9 sm:text-xs text-ink-70 transition-colors duration-150 outline-none select-none hover:border-ink-45 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground aria-expanded:border-foreground aria-expanded:text-foreground"
         >
           {initialsFromEmail(email)}
         </DropdownMenuTrigger>

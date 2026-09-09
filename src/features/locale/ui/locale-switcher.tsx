@@ -18,7 +18,7 @@ export function LocaleSwitcher() {
     <DropdownMenu onOpenChange={(open) => open && playSound('open')}>
       <WithTooltip label={t.locale.label}>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon-sm" aria-label={t.locale.label}>
+          <Button variant="outline" size="icon-sm" aria-label={t.locale.label} className="sm:size-9">
             <Languages />
           </Button>
         </DropdownMenuTrigger>
