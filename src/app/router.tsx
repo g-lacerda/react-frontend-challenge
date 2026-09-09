@@ -11,7 +11,6 @@ import { RootLayout } from './layouts/root-layout'
 import { RoutePending } from './layouts/route-pending'
 
 // Cada página vira um pedaço próprio do bundle, baixado só quando a rota é aberta.
-// Cada página vira um pedaço próprio do bundle, baixado só quando a rota é aberta.
 const HomePage = lazy(() => import('@/pages/home/home-page').then((m) => ({ default: m.HomePage })))
 const LoginPage = lazy(() => import('@/pages/login/login-page').then((m) => ({ default: m.LoginPage })))
 const MoviePage = lazy(() => import('@/pages/movie/movie-page').then((m) => ({ default: m.MoviePage })))
