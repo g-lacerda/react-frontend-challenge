@@ -1,0 +1,190 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/space-grotesk";
+@import "@fontsource-variable/jetbrains-mono";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Duas cores e nada mais: fundo e tinta. Toda a hierarquia sai da opacidade
+ * da tinta sobre o fundo. O tema claro só inverte o par.
+ */
+:root {
+  --bg: #f4f4f2;
+  --ink: #101010;
+  --ink-rgb: 16 16 16;
+}
+
+.dark {
+  --bg: #070707;
+  --ink: #eeeeee;
+  --ink-rgb: 238 238 238;
+}
+
+:root,
+.dark {
+  --ink-03: rgb(var(--ink-rgb) / 0.03);
+  --ink-06: rgb(var(--ink-rgb) / 0.06);
+  --ink-10: rgb(var(--ink-rgb) / 0.1);
+  --ink-16: rgb(var(--ink-rgb) / 0.16);
+  --ink-28: rgb(var(--ink-rgb) / 0.28);
+  /* 0.6 em vez de 0.45: é o degrau usado em texto, e abaixo disso não passa em WCAG AA. */
+  --ink-45: rgb(var(--ink-rgb) / 0.6);
+  --ink-70: rgb(var(--ink-rgb) / 0.7);
+
+  --background: var(--bg);
+  --foreground: var(--ink);
+  --card: var(--ink-03);
+  --card-foreground: var(--ink);
+  --popover: var(--bg);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--bg);
+  --secondary: var(--ink-06);
+  --secondary-foreground: var(--ink);
+  --muted: var(--ink-06);
+  --muted-foreground: var(--ink-45);
+  --accent: var(--ink-06);
+  --accent-foreground: var(--ink);
+  --destructive: var(--ink);
+  --border: var(--ink-10);
+  --input: var(--ink-16);
+  --ring: var(--ink);
+  --radius: 4px;
+}
+
+@theme inline {
+  --font-sans: "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-heading: var(--font-sans);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-ink: var(--ink);
+  --color-ink-03: var(--ink-03);
+  --color-ink-06: var(--ink-06);
+  --color-ink-10: var(--ink-10);
+  --color-ink-16: var(--ink-16);
+  --color-ink-28: var(--ink-28);
+  --color-ink-45: var(--ink-45);
+  --color-ink-70: var(--ink-70);
+
+  --radius-xs: 3px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
+  --radius-2xl: 6px;
+  --radius-3xl: 6px;
+  --radius-4xl: 99px;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-rise: rise 320ms var(--ease-out-quint) both;
+  --animate-fade: fade 460ms var(--ease-out-quint) both;
+  --animate-pop: pop 260ms var(--ease-out-quint) both;
+  --animate-shimmer: shimmer 1.5s linear infinite;
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.4); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes shimmer {
+    from { background-position: -180% 0; }
+    to { background-position: 180% 0; }
+  }
+}
+
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility stagger {
+  > * {
+    animation: rise 320ms var(--ease-out-quint) both;
+  }
+  > *:nth-child(1) { animation-delay: 20ms; }
+  > *:nth-child(2) { animation-delay: 55ms; }
+  > *:nth-child(3) { animation-delay: 90ms; }
+  > *:nth-child(4) { animation-delay: 125ms; }
+  > *:nth-child(5) { animation-delay: 160ms; }
+  > *:nth-child(6) { animation-delay: 195ms; }
+  > *:nth-child(7) { animation-delay: 230ms; }
+  > *:nth-child(n + 8) { animation-delay: 260ms; }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans antialiased;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1, h2, h3, h4 {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  button:not(:disabled), [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
