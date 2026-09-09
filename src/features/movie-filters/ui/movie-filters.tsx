@@ -1,6 +1,5 @@
 import { Search, SlidersHorizontal, X } from 'lucide-react'
 import { useId, useMemo, useState } from 'react'
-import { cn } from 'cn'
 import {
   SEARCH_MAX_LENGTH,
   SORT_OPTIONS,
@@ -11,6 +10,7 @@ import {
 } from '@/entities/movie'
 import { useTranslation } from '@/shared/i18n'
 import { Button } from '@/shared/ui/button'
+import { CollapsiblePanel } from '@/shared/ui/collapsible-panel'
 import { Combobox, type ComboboxOption } from '@/shared/ui/combobox'
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
@@ -143,10 +143,7 @@ export function MovieFilters() {
         </Button>
       </div>
 
-      <div
-        id={panelId}
-        className={cn('animate-rise rounded-md border border-border bg-card p-4', !open && 'hidden')}
-      >
+      <CollapsiblePanel open={open} id={panelId} className="rounded-md border border-border bg-card p-4">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           <FilterField id="genre" label={t.filters.genre}>
             <Combobox
@@ -247,7 +244,7 @@ export function MovieFilters() {
             {t.filters.reset}
           </Button>
         </div>
-      </div>
+      </CollapsiblePanel>
     </div>
   )
 }
